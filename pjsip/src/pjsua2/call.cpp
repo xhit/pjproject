@@ -474,6 +474,9 @@ Call::Call(Account& account, int call_id)
 
 Call::~Call()
 {
+    // OCE: this return to avoid a hangup when GC is triggered
+    return;
+
     /* Remove reference to this instance from PJSUA library */
     if (id != PJSUA_INVALID_ID)
         pjsua_call_set_user_data(id, NULL);
@@ -485,6 +488,26 @@ Call::~Call()
     if (pjsua_get_state() < PJSUA_STATE_CLOSING && isActive()) {
         try {
             CallOpParam prm;
+            hangup(prm);
+        } catch (Error &err) {
+            // Ignore
+            PJ_UNUSED_ARG(err);
+        }
+    }
+}
+
+void Call::destroyCall(CallOpParam prm)
+{
+    /* Remove reference to this instance from PJSUA library */
+    if (id != PJSUA_INVALID_ID)
+        pjsua_call_set_user_data(id, NULL);
+
+    /*
+     * If this instance is deleted, also hangup the corresponding call in
+     * PJSUA library.
+     */
+    if (pjsua_get_state() < PJSUA_STATE_CLOSING && isActive()) {
+        try {
             hangup(prm);
         } catch (Error &err) {
             // Ignore

@@ -1387,6 +1387,11 @@ public:
     virtual ~Call();
 
     /**
+     * OCE: destructor
+     */
+    void destroyCall(CallOpParam prm) PJSUA2_THROW(Error);
+
+    /**
      * Obtain detail information about this call.
      *
      * @return              Call info.
