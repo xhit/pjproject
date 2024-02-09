@@ -321,6 +321,11 @@ static pj_status_t create_conf_port( pj_pool_t *pool,
      */
     if (conf_port->clock_rate != conf->clock_rate) {
 
+        // debug
+PJ_LOG(4,(THIS_FILE, "conf_port->clock_rate = %d,  conf->clock_rate = %d",
+                         conf_port->clock_rate, conf->clock_rate));
+        // end debug
+
         pj_bool_t high_quality;
         pj_bool_t large_filter;
 
