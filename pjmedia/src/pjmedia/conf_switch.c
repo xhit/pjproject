@@ -542,9 +542,9 @@ PJ_DEF(pj_status_t) pjmedia_conf_connect_port( pjmedia_conf *conf,
         src_afd->avg_bps != dst_afd->avg_bps)
     {
         PJ_LOG(2,(THIS_FILE, "src_port->info->fmt.id = %d, dst_port->info->fmt.id = %d",
-                                  src_port->info->fmt.id, dst_port->info->fmt.id);
+                                  src_port->info->fmt.id, dst_port->info->fmt.id));
         PJ_LOG(2,(THIS_FILE, "src_afd->avg_bps = %d, dst_afd->avg_bps = %d",
-                                  src_afd->avg_bps, dst_afd->avg_bps);
+                                  src_afd->avg_bps, dst_afd->avg_bps));
         pj_mutex_unlock(conf->mutex);
         return PJMEDIA_ENOTCOMPATIBLE;
     }
@@ -552,7 +552,7 @@ PJ_DEF(pj_status_t) pjmedia_conf_connect_port( pjmedia_conf *conf,
     /* Clock rate must match. */
     if (src_afd->clock_rate != dst_afd->clock_rate) {
         PJ_LOG(2,(THIS_FILE, "src_afd->clock_rate = %d, dst_afd->clock_rate = %d",
-                                  src_afd->clock_rate, dst_afd->clock_rate);
+                                  src_afd->clock_rate, dst_afd->clock_rate));
         pj_mutex_unlock(conf->mutex);
         return PJMEDIA_ENCCLOCKRATE;
     }
@@ -560,7 +560,7 @@ PJ_DEF(pj_status_t) pjmedia_conf_connect_port( pjmedia_conf *conf,
     /* Channel count must match. */
     if (src_afd->channel_count != dst_afd->channel_count) {
         PJ_LOG(2,(THIS_FILE, "src_afd->channel_count = %d, dst_afd->channel_count = %d",
-                                  src_afd->channel_count, dst_afd->channel_count);
+                                  src_afd->channel_count, dst_afd->channel_count));
         pj_mutex_unlock(conf->mutex);
         return PJMEDIA_ENCCHANNEL;
     }
@@ -570,7 +570,7 @@ PJ_DEF(pj_status_t) pjmedia_conf_connect_port( pjmedia_conf *conf,
         (dst_afd->frame_time_usec % src_afd->frame_time_usec != 0))
     {
         PJ_LOG(2,(THIS_FILE, "src_afd->frame_time_usec = %d, dst_afd->frame_time_usec = %d",
-                                  rc_afd->frame_time_usec, dst_afd->frame_time_usec);
+                                  rc_afd->frame_time_usec, dst_afd->frame_time_usec));
         pj_mutex_unlock(conf->mutex);
         return PJMEDIA_ENCSAMPLESPFRAME;
     }
