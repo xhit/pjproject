@@ -356,6 +356,12 @@ AudioMediaPlayer::AudioMediaPlayer()
 
 AudioMediaPlayer::~AudioMediaPlayer()
 {
+
+}
+
+// destroyPlayer is the same code as destructor, but should be called manually. This to avoid GC destroying the player
+void AudioMediaPlayer::destroyPlayer()
+{
     if (playerId != PJSUA_INVALID_ID) {
         PJSUA2_CATCH_IGNORE( unregisterMediaPort() );
         pjsua_player_destroy(playerId);

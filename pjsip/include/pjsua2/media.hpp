@@ -629,6 +629,11 @@ public:
      */
     virtual ~AudioMediaPlayer();
 
+    /**
+     * OCE: destructor
+     */
+    void destroyPlayer() PJSUA2_THROW(Error);
+
 public:
     /*
      * Callbacks
