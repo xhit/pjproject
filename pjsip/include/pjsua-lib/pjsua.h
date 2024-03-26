@@ -2787,6 +2787,9 @@ typedef struct pjsua_ip_change_param
 {
     /**
      * If set to PJ_TRUE, this will restart the transport listener.
+     * Note that if restarting listener is enabled and the listener is
+     * configured with a bound address, the address will be reset
+     * so it will bind to any address (e.g: IPv4 "0.0.0.0" or IPv6 "::").
      * 
      * Default : PJ_TRUE
      */
@@ -3205,9 +3208,8 @@ typedef struct pjsua_transport_config
     pj_str_t            bound_addr;
 
     /**
-     * This specifies TLS settings for TLS transport. It is only be used
-     * when this transport config is being used to create a SIP TLS
-     * transport.
+     * This specifies TLS settings for TLS transport. 
+     * It’s only used when creating a SIP TLS transport.
      */
     pjsip_tls_setting   tls_setting;
 
@@ -3796,8 +3798,8 @@ typedef struct pjsua_turn_config
     pj_stun_auth_cred   turn_auth_cred;
 
     /**
-     * This specifies TLS settings for TURN TLS. It is only be used
-     * when this TLS is used to connect to the TURN server.
+     * This specifies TLS settings for TURN TLS. It’s only applicable when
+     * TLS is used to connect to the TURN server.
      */
     pj_turn_sock_tls_cfg turn_tls_setting;
 
@@ -7394,8 +7396,8 @@ struct pjsua_media_config
     pj_stun_auth_cred   turn_auth_cred;
 
     /**
-     * This specifies TLS settings for TLS transport. It is only be used
-     * when this TLS is used to connect to the TURN server.
+     * This specifies TLS settings for TLS transport. It’s only applicable
+     * when TLS is used to connect to the TURN server.
      */
     pj_turn_sock_tls_cfg turn_tls_setting;
 
