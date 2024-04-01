@@ -1023,6 +1023,11 @@ void Call::processStateChange(OnCallStateParam &prm)
         pjsua_call_set_user_data(id, NULL);
     }
     
+    // OCE: add the call info to avoid call getInfo() that can triggers a deadlock
+    CallInfo ci;
+    ci.fromPj(pj_ci);
+    prm.callInfo = ci;
+
     onCallState(prm);
     /* If the state is DISCONNECTED, this call may have already been deleted
      * by the application in the callback, so do not access it anymore here.

@@ -726,6 +726,10 @@ public:
 struct OnCallStateParam
 {
     /**
+     * The call info to avoid app call getInfo() that will performs a deadlock
+    */
+    CallInfo callInfo;
+    /**
      * Event which causes the call state to change.
      */
     SipEvent    e;
