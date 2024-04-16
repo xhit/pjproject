@@ -5760,6 +5760,17 @@ PJ_DECL(pj_status_t) pjsua_call_get_info(pjsua_call_id call_id,
                                          pjsua_call_info *info);
 
 /**
+ * Obtain the current inv status of call.
+ *
+ * @param call_id       Call identification.
+ * @param info          Call info to be initialized.
+ *
+ * @return              PJ_SUCCESS on success, or the appropriate error code.
+ */
+PJ_DECL(pj_status_t) pjsua_call_get_inv_status(pjsua_call_id call_id,
+                                         pjsua_call_info *info);
+
+/**
  * Check if remote peer support the specified capability.
  *
  * @param call_id       Call identification.

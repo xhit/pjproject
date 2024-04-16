@@ -1865,6 +1865,7 @@ public:
      * Internal function (called by Endpoint) to process call state change.
      */
     void processStateChange(OnCallStateParam &prm);
+    void oceProcessStateChange(OnCallStateParam &prm);
     
 public:
     /*

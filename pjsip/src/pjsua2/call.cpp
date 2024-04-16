@@ -1033,3 +1033,26 @@ void Call::processStateChange(OnCallStateParam &prm)
      * by the application in the callback, so do not access it anymore here.
      */
 }
+
+void Call::oceProcessStateChange(OnCallStateParam &prm)
+{
+    pjsua_call_info pj_ci;
+    
+    // OCE: originally called pjsua_call_get_info instead pjsua_call_get_inv_status
+    if (pjsua_call_get_inv_status(id, &pj_ci) == PJ_SUCCESS &&
+        pj_ci.state == PJSIP_INV_STATE_DISCONNECTED)
+    {
+        /* Remove this Call object association */
+        pjsua_call_set_user_data(id, NULL);
+    }
+    
+    // OCE: add the call info to avoid call getInfo() that can triggers a deadlock
+    CallInfo ci;
+    ci.fromPj(pj_ci);
+    prm.callInfo = ci;
+
+    onCallState(prm);
+    /* If the state is DISCONNECTED, this call may have already been deleted
+     * by the application in the callback, so do not access it anymore here.
+     */
+}

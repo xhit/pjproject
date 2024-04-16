@@ -2529,6 +2529,75 @@ PJ_DEF(pj_status_t) pjsua_call_get_info( pjsua_call_id call_id,
 }
 
 /*
+ * Obtain detail information about the specified call.
+ */
+PJ_DEF(pj_status_t) pjsua_call_get_inv_status( pjsua_call_id call_id,
+                                         pjsua_call_info *info)
+{
+
+    PJ_ASSERT_RETURN(call_id>=0 && call_id<(int)pjsua_var.ua_cfg.max_calls,
+                     PJ_EINVAL);
+
+    pj_bzero(info, sizeof(*info));
+
+    pjsua_call *call;
+    pj_bool_t hanging_up;
+    pj_bool_t has_invite;
+    pj_bool_t has_dlg;
+    pjsip_status_code last_code;
+    pjsip_inv_state call_invite_state;
+    pjsip_status_code call_invite_cause;
+    pj_str_t call_invite_cause_text;
+    pj_str_t last_text;
+
+    PJSUA_LOCK();
+    call = &pjsua_var.calls[call_id];
+    hanging_up = call->hanging_up;
+    has_invite = (call->inv ? PJ_TRUE : PJ_FALSE);
+    has_dlg = (call->async_call.dlg ? PJ_TRUE : PJ_FALSE);
+    last_code = call->last_code;
+    call_invite_state = call->inv->state;
+    call_invite_cause = call->inv->cause;
+    call_invite_cause_text = call->inv->cause_text;
+    last_text = call->last_text;
+    PJSUA_UNLOCK();
+
+    /* id */
+    info->id = call_id;
+
+    /* state, state_text */
+    if (hanging_up) {
+        info->state = PJSIP_INV_STATE_DISCONNECTED;
+    } else if (has_invite) {
+        info->state = call_invite_state;
+    } else if (has_dlg && last_code==0) {
+        info->state = PJSIP_INV_STATE_NULL;
+    } else {
+        info->state = PJSIP_INV_STATE_DISCONNECTED;
+    }
+    info->state_text = pj_str((char*)pjsip_inv_state_name(info->state));
+
+    /* If call is disconnected, set the last_status from the cause code */
+    if (has_invite && call_invite_state >= PJSIP_INV_STATE_DISCONNECTED) {
+        /* last_status, last_status_text */
+        info->last_status = call_invite_cause;
+
+        info->last_status_text.ptr = info->buf_.last_status_text;
+        pj_strncpy(&info->last_status_text, &call_invite_cause_text,
+                   sizeof(info->buf_.last_status_text));
+    } else {
+        /* last_status, last_status_text */
+        info->last_status = last_code;
+
+        info->last_status_text.ptr = info->buf_.last_status_text;
+        pj_strncpy(&info->last_status_text, &last_text,
+                   sizeof(info->buf_.last_status_text));
+    }
+
+    return PJ_SUCCESS;
+}
+
+/*
  * Check if call remote peer support the specified capability.
  */
 PJ_DEF(pjsip_dialog_cap_status) pjsua_call_remote_has_cap(

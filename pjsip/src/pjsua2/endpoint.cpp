@@ -1142,7 +1142,7 @@ void Endpoint::on_call_state(pjsua_call_id call_id, pjsip_event *e)
     OnCallStateParam prm;
     prm.e.fromPj(*e);
     
-    call->processStateChange(prm);
+    call->oceProcessStateChange(prm);
     /* If the state is DISCONNECTED, call may have already been deleted
      * by the application in the callback, so do not access it anymore here.
      */
