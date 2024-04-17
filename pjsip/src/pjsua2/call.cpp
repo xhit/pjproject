@@ -1037,11 +1037,21 @@ void Call::processStateChange(OnCallStateParam &prm)
 void Call::oceProcessStateChange(OnCallStateParam &prm)
 {
     pjsua_call_info pj_ci;
+    unsigned mi;
     
     // OCE: originally called pjsua_call_get_info instead pjsua_call_get_inv_status
     if (pjsua_call_get_inv_status(id, &pj_ci) == PJ_SUCCESS &&
         pj_ci.state == PJSIP_INV_STATE_DISCONNECTED)
     {
+        /* Clear medias. */
+        for (mi = 0; mi < medias.size(); mi++) {
+            if (medias[mi]) {
+                Endpoint::instance().mediaRemove((AudioMedia &)*medias[mi]);
+                delete medias[mi];
+            }
+        }
+        medias.clear();
+
         /* Remove this Call object association */
         pjsua_call_set_user_data(id, NULL);
     }
