@@ -979,6 +979,11 @@ void Call::processMediaUpdate(OnCallMediaStateParam &prm)
             }
         }
     }
+
+    // OCE: add the call info to avoid call getInfo() that can triggers a deadlock
+    CallInfo ci;
+    ci.fromPj(pj_ci);
+    prm.callInfo = ci;
     
     /* Call media state callback. */
     onCallMediaState(prm);

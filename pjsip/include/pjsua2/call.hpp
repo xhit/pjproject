@@ -751,6 +751,10 @@ struct OnCallTsxStateParam
  */
 struct OnCallMediaStateParam
 {
+    /**
+     * The call info to avoid app call getInfo() that will performs a deadlock
+    */
+    CallInfo callInfo;
 };
 
 /**
